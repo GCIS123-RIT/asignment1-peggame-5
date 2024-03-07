@@ -9,6 +9,6 @@ public interface PegGame {
 
     public GameState getGameState();
 
-    public void makeMove(Move move) throws pegGameException;
+    public void makeMove(Move move) throws PegGameException;
 
 }

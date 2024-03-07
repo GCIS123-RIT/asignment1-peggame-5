@@ -22,4 +22,8 @@ public class Move {
         return "From: " + this.from + " To: " + this.to;
     }
     
+    @Override
+    public hashCode() {
+        return this.from.hashCode() + this.to.hashCode();
+    }
 }

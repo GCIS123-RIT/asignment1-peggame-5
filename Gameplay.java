@@ -5,7 +5,7 @@ import java.util.Collection;
 public class Gameplay implements PegGame
 {
     public int BOARD_SIZE;
-    public int pegs;
+    public int pegs = BOARD_SIZE * BOARD_SIZE - 1;
    
     public Location board [][];
 
@@ -13,14 +13,9 @@ public class Gameplay implements PegGame
 
     public GameState current_status;
 
-    public Gameplay(int size, Location start)
-    {
-        BOARD_SIZE = size;
-        current_pos = start;
-        current_status = GameState.NOT_STARTED;
-    } 
-
-    //this setups individual location values for each psoition on the board
+    /*this setups individual location values for each psoition on the board
+    * @return void
+    */
     public void setupBoard()
     {
         for (int i = 0; i < BOARD_SIZE; i++)
@@ -31,6 +26,7 @@ public class Gameplay implements PegGame
             }
         }
     }
+
 
     public Collection<Move> getPossibleMoves()
     {

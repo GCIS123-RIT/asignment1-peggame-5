@@ -10,8 +10,8 @@ public class Gameplay implements PegGame
     public Location board [][];
     public boolean EmptyHole[][];
 
-    public int start_row;
-    public int start_col;
+    public int start_row = 3;
+    public int start_col = 1;
     public Location current_pos = new Location(start_row, start_col);
 
     public boolean MoveMade = false;

@@ -28,27 +28,31 @@ public class Gameplay implements PegGame
     }
 
 
+
+
     public Collection<Move> getPossibleMoves()
     {
-        Location leftmove = new Location(current_pos.row, current_pos.col - 2);
-        Location rightmove = new Location(current_pos.row, current_pos.col + 2);
-        Location upmove = new Location(current_pos.row - 2, current_pos.col);
-        Location downmove = new Location(current_pos.row + 2, current_pos.col);
-        Location upleftmove = new Location(current_pos.row - 2, current_pos.col - 2);
-        Location uprightmove = new Location(current_pos.row - 2, current_pos.col + 2);
-        Location downleftmove = new Location(current_pos.row + 2, current_pos.col - 2);
-        Location downrightmove = new Location(current_pos.row + 2, current_pos.col + 2);
+        Location left_loc = new Location(current_pos.row, current_pos.col - 2);
+        Location right_loc = new Location(current_pos.row, current_pos.col + 2);
+        Location up_loc = new Location(current_pos.row - 2, current_pos.col);
+        Location down_loc = new Location(current_pos.row + 2, current_pos.col);
+        Location upleft_loc = new Location(current_pos.row - 2, current_pos.col - 2);
+        Location upright_loc = new Location(current_pos.row - 2, current_pos.col + 2);
+        Location downleft_loc = new Location(current_pos.row + 2, current_pos.col - 2);
+        Location downright_loc = new Location(current_pos.row + 2, current_pos.col + 2);
+
+
 
         Move[] possible_moves = 
         {
-            new Move(current_pos, leftmove), 
-            new Move(current_pos, rightmove),
-            new Move(current_pos, upmove),
-            new Move(current_pos, downmove),
-            new Move(current_pos, upleftmove),
-            new Move(current_pos, uprightmove),
-            new Move(current_pos, downleftmove),
-            new Move(current_pos, downrightmove)
+            new Move(current_pos, left_loc), 
+            new Move(current_pos, right_loc),
+            new Move(current_pos, up_loc),
+            new Move(current_pos, down_loc),
+            new Move(current_pos, upleft_loc),
+            new Move(current_pos, upright_loc),
+            new Move(current_pos, downleft_loc),
+            new Move(current_pos, downright_loc)
         };
 
         for (int i = 0; i < possible_moves.length; i++)
@@ -85,9 +89,27 @@ public class Gameplay implements PegGame
      * 
      * @return a string representation of the board
      */
+    // !!!! incomplete
     @Override
     public String toString()
     {
-        
+        String board_string = "";
+        for (int i = 0; i < BOARD_SIZE; i++)
+        {
+            for (int j = 0; j < BOARD_SIZE; j++)
+            {
+                if (board[i][j] == null)
+                {
+                    board_string += "-";
+                }
+                else
+                {
+                    board_string += "o";
+                }
+            }
+            board_string += "\n";
+        }
+        return board_string;
     }
+    // !!!! incomplete
 }

@@ -1,5 +1,3 @@
-package main.java.Assignment_1;
-
 public class Location {
 
     public int row;
@@ -24,7 +22,7 @@ public class Location {
     }
 
     @Override
-    public string toString() {
+    public String toString() {
         return "Row: " + this.row + " Col: " + this.col;
     }
 

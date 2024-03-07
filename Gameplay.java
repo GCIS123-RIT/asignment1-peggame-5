@@ -1,6 +1,5 @@
-package main.java.Assignment_1;
-
 import java.util.Collection;
+import java.util.ArrayList;
 
 public class Gameplay implements PegGame
 {
@@ -50,41 +49,26 @@ public class Gameplay implements PegGame
         Location upright_loc = new Location(current_pos.row - 2, current_pos.col + 2);
         Location downleft_loc = new Location(current_pos.row + 2, current_pos.col - 2);
         Location downright_loc = new Location(current_pos.row + 2, current_pos.col + 2);
+        
+        Location[] possible_locs = {left_loc, right_loc, up_loc, down_loc, upleft_loc, upright_loc, downleft_loc, downright_loc};
 
-        // 8 possible moves
-        Move move_left = new Move(current_pos, left_loc);
-        Move move_right = new Move(current_pos, right_loc);
-        Move move_up = new Move(current_pos, up_loc);
-        Move move_down = new Move(current_pos, down_loc);
-        Move move_upleft = new Move(current_pos, upleft_loc);
-        Move move_upright = new Move(current_pos, upright_loc);
-        Move move_downleft = new Move(current_pos, downleft_loc);
-        Move move_downright = new Move(current_pos, downright_loc);
 
-        Move[] possible_moves = 
+        ArrayList<Move> possible_moves = new ArrayList<Move>();
+
+        //checks if the possible moves are valid
+        for (int i = 0; i < possible_locs.length; i++)
         {
-            move_left, 
-            move_right, 
-            move_up, 
-            move_down, 
-            move_upleft, 
-            move_upright, 
-            move_downleft, 
-            move_downright
-        };
-
-        for (int i = 0; i < possible_moves.length; i++)
-        {
-            if (possible_moves[i].getTo().getRow() < 0 || 
-            possible_moves[i].getTo().getRow() > BOARD_SIZE || 
-            possible_moves[i].getTo().getCol() < 0 || 
-            possible_moves[i].getTo().getCol() > BOARD_SIZE || 
-            EmptyHole[possible_moves[i].getTo().getRow()][possible_moves[i].getTo().getCol()] == false)
+            if (possible_locs[i].getRow() < 0 || 
+            possible_locs[i].getRow() > BOARD_SIZE || 
+            possible_locs[i].getCol() < 0 || 
+            possible_locs[i].getCol() > BOARD_SIZE || 
+            EmptyHole[possible_locs[i].getRow()][possible_locs[i].getCol()] == false)
             {
-                possible_moves[i] = null;
+                possible_moves.add(new Move(current_pos, possible_locs[i]));
             }
         }
 
+        //returns the possible moves as a collection
         return possible_moves;
     }
 
@@ -102,10 +86,10 @@ public class Gameplay implements PegGame
             current_status = GameState.IN_PROGRESS;}
         
         else if (pegs == 1){
-            current_status = GameState.WON;}
+            current_status = GameState.WIN;}
 
         else if (pegs > 1){
-            current_status = GameState.LOST;}
+            current_status = GameState.STALEMATE;}
 
         return current_status; 
     }

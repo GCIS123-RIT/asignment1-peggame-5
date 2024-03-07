@@ -4,46 +4,48 @@ import java.util.Scanner;
 
 public class ReadTxt {
 
-    public boolean isEmpty(string data){
+    String file1 = "/workspaces/asignment1-peggame-5/fourByFour.txt";
+    String file2 = "/workspaces/asignment1-peggame-5/fiveByFive.txt";
+    String file3 = "/workspaces/asignment1-peggame-5/sixBySix.txt";
+
+    public boolean isEmpty(String data){
         if (data == "."){
             return true;
         }
         else if (data == "o"){
             return false;
         }
+        return false;
     }
 
-    public static void main(String[] args) {
-        try {
-            File myObj = new File("/workspaces/asignment1-peggame-5/fiveByFive.txt");
-            Scanner myReader = new Scanner(myObj);
+    public void readTxt(String filename) throws FileNotFoundException {
+        File file = new File(filename);
+        Scanner myReader = new Scanner(file);
+            String data = ""; // Declare the data variable outside of the loop
+
             while (myReader.hasNextLine()) {
-                String data = myReader.nextLine();
+                data = myReader.nextLine();
             }
             myReader.close();
 
             //convert first line of data from the file into an integer
             int size = Integer.parseInt(data);
-            
+
             //create a 2D array of the size of the board
-            Location board[][] = new Location[size][size];
             boolean EmptyHole[][] = new boolean[size][size];
-            
-            //fill the array with the data from the file
-            for (int i = 0; i < size; i++){
-                for (int j = 0; j < size; j++){
-                    if (isEmpty(data)){
-                        EmptyHole[i][j] = true;
-                    }
-                    else{
-                        EmptyHole[i][j] = false;
-                    }
+        
+        //fill the array with the data from the file
+        for (int i = 1; i < size; i++){
+            for (int j = 0; j < size; j++){
+                if (isEmpty(data) == true){
+                    EmptyHole[i][j] = true;
+                }
+                else if (isEmpty(data) == false)
+                {
+                    EmptyHole[i][j] = false;
                 }
             }
-            
-        } catch (FileNotFoundException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
         }
     }
+
 }

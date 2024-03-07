@@ -1,5 +1,3 @@
-package main.java.Assignment_1;
-
 import java.util.Collection;
 
 public interface PegGame {

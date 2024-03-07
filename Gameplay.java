@@ -5,12 +5,32 @@ import java.util.Collection;
 public class Gameplay implements PegGame
 {
     public int BOARD_SIZE;
-    //Rows and columns are numbered beginning with 0.
-    public int[][] board = new int[BOARD_SIZE][BOARD_SIZE];
+    public int pegs;
+   
+    public Location board [][];
+
     public Location current_pos = new Location();
 
     public GameState current_status;
 
+    public Gameplay(int size, Location start)
+    {
+        BOARD_SIZE = size;
+        current_pos = start;
+        current_status = GameState.NOT_STARTED;
+    } 
+
+    //this setups individual location values for each psoition on the board
+    public void setupBoard()
+    {
+        for (int i = 0; i < BOARD_SIZE; i++)
+        {
+            for (int j = 0; j < BOARD_SIZE; j++)
+            {
+                board[i][j] = new Location(i, j);
+            }
+        }
+    }
 
     public Collection<Move> getPossibleMoves()
     {
@@ -53,7 +73,12 @@ public class Gameplay implements PegGame
 
     public void makeMove(Move move) throws PegGameException
     {
+        boolean MoveMade = false;
+        Collection<Move> possible_moves = getPossibleMoves();
         
+        if (MoveMade == true){
+            current_status = GameState.IN_PROGRESS;}
+
     }
     
 

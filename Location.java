@@ -30,11 +30,7 @@ public class Location {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) 
-        {
-            return false;
-        }
-        if (!Location.class.isAssignableFrom(obj.getClass())) 
+        if (obj == null || !Location.class.isAssignableFrom(obj.getClass())) 
         {
             return false;
         }

@@ -4,10 +4,6 @@ import java.util.Scanner;
 
 public class ReadTxt {
 
-    String file1 = "/workspaces/asignment1-peggame-5/fourByFour.txt";
-    String file2 = "/workspaces/asignment1-peggame-5/fiveByFive.txt";
-    String file3 = "/workspaces/asignment1-peggame-5/sixBySix.txt";
-
     public boolean isEmpty(String data){
         if (data == "."){
             return true;

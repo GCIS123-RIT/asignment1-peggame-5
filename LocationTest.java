@@ -11,8 +11,8 @@ public class LocationTest {
         Location expecteLocation = new Location(2, 3);
         Integer ExpectedRow = 2;
         Integer ExpectedColumn = 3;
-        assertEquals(ExpectedRow, excpectedlocation.getRow());
-        assertEquals(ExpectedColumn, expectedlocation.getCol());
+        assertEquals(ExpectedRow, excpectedlocation.getRow()); // testing if the expected and the actual Row value are the same
+        assertEquals(ExpectedColumn, expectedlocation.getCol()); //testing if the expected and the actual col value are the same
     }
 
     @Test
@@ -29,8 +29,8 @@ public class LocationTest {
         Location location2 = new Location(2, 3);
         Location location3 = new Location(3, 2);
 
-        assertTrue(location1.equals(location2)); // Same row and col
-        assertFalse(location1.equals(location3)); // Different row and col
+        assertTrue(location1.equals(location2)); // Testing if the the boolean function of the Location file will correctly return true for two locations with same row and col value 
+        assertFalse(location1.equals(location3)); // Different row and col value should be returned as false
     }
 }
 

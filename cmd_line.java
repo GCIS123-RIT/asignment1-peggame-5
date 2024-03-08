@@ -4,17 +4,26 @@ import java.util.Scanner;
 
 public class cmd_line implements PegGame {
     
+    //instance variables
     public int BOARD_SIZE;
     public int pegs;
    
+    //2D array of locations and boolean array of empty holes
     public Location board [][];
     public boolean EmptyHole[][];
 
+    //game status
     public boolean MoveMade = false;
     public GameState current_status;
 
+    //current position of chosen peg
     public Location current_pos = new Location();
 
+    /*
+     * This constructor will create a new game with the given board size and empty hole configuration.
+     * 
+     * @param board_size the size of the board
+     */
     public cmd_line(int board_size, boolean[][] emptyHole){
         this.BOARD_SIZE = board_size;
         this.EmptyHole = emptyHole;
@@ -23,6 +32,11 @@ public class cmd_line implements PegGame {
         setupBoard();
     }
 
+    /*
+     * This method will set up the board for the game.
+     * 
+     * @return void
+     */
     public void setupBoard(){
         for (int i = 0; i <= BOARD_SIZE; i++)
         {

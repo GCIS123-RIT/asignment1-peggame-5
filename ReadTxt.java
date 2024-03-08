@@ -3,6 +3,13 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class ReadTxt {
+    /*
+     * This method will create a new game from the given file.
+     * 
+     * @param filename the name of the file
+     * 
+     * @return the game created from the file
+     */
     public static cmd_line createGameFromFile(String filename) {
         try {
             File file = new File(filename);

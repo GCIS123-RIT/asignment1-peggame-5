@@ -9,10 +9,10 @@ public class LocationTest {
     @Test
     void testConstructorAndGetters() {
         Location expecteLocation = new Location(2, 3);
-        Integer ExpectedRow = 2;
-        Integer ExpectedColumn = 3;
-        assertEquals(ExpectedRow, excpectedlocation.getRow()); // testing if the expected and the actual Row value are the same
-        assertEquals(ExpectedColumn, expectedlocation.getCol()); //testing if the expected and the actual col value are the same
+        Integer ActualRow = 2;
+        Integer ActualColumn = 3;
+        assertEquals(ActualRow, excpectedlocation.getRow()); // testing if the expected and the actual Row value are the same
+        assertEquals(ActualColumn, expectedlocation.getCol()); //testing if the expected and the actual col value are the same
     }
 
     @Test

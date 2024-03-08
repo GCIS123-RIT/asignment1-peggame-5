@@ -4,6 +4,12 @@ import java.util.Scanner;
 
 public class ReadTxt {
 
+    /*
+     * This method will return a boolean value based on the data from the file.
+     * 
+     * @param data the data from the file
+     * @return a boolean value based on the data from the file
+     */
     public boolean isEmpty(String data){
         if (data == "."){
             return true;
@@ -14,6 +20,13 @@ public class ReadTxt {
         return false;
     }
 
+    /*
+     * This method will read the file and fill the 2D array with the data from the file.
+     * 
+     * @param filename the name of the file to be read
+     * @throws FileNotFoundException if the file is not found
+     * @return the 2D array filled with the data from the file
+     */
     public void readTxt(String filename) throws FileNotFoundException {
         File file = new File(filename);
         Scanner myReader = new Scanner(file);

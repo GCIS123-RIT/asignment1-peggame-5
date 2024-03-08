@@ -107,6 +107,7 @@ public class Gameplay implements PegGame
 
         if (possible_moves.contains(move))
         {
+            //
             Location from = move.getFrom();
             Location to = move.getTo();
             Location middle = new Location((from.getRow() + to.getRow()) / 2, (from.getCol() + to.getCol()) / 2);

@@ -15,7 +15,23 @@ public class cmd_line implements PegGame {
 
     public Location current_pos = new Location();
 
+    public cmd_line(int board_size, boolean[][] emptyHole){
+        this.BOARD_SIZE = board_size;
+        this.EmptyHole = emptyHole;
+        this.board = new Location[BOARD_SIZE][BOARD_SIZE];
+        this.pegs = BOARD_SIZE * BOARD_SIZE - 1;
+        setupBoard();
+    }
 
+    public void setupBoard(){
+        for (int i = 0; i <= BOARD_SIZE; i++)
+        {
+            for (int j = 0; j <= BOARD_SIZE; j++)
+            {
+                board[i][j] = new Location(i, j);
+            }
+        }
+    }
 
     /*
      * This method will return a collection of all possible moves that can be made on the board.
@@ -114,58 +130,46 @@ public class cmd_line implements PegGame {
      * 
      * @param args the command-line arguments
      */
-    public static void userInterface(){
+    public static void playGame(PegGame game) {
         Scanner scanner = new Scanner(System.in);
         boolean quit = false;
-        
+
         while (!quit) {
             System.out.print("Enter a command: ");
             String command = scanner.nextLine();
-            
-            String[] commandParts = command.split(" ");
-            
-            switch (commandParts[0]) {
-                case "move":
-                    if (commandParts.length != 5) {
-                        System.out.println("Invalid move command. Usage: move r1 c1 r2 c2");
+
+            String[] parts = command.split(" ");
+            String cmd = parts[0];
+
+            try {
+                switch (cmd) {
+                    case "move":
+                        int r1 = Integer.parseInt(parts[1]);
+                        int c1 = Integer.parseInt(parts[2]);
+                        int r2 = Integer.parseInt(parts[3]);
+                        int c2 = Integer.parseInt(parts[4]);
+                        game.makeMove(new Move(new Location(r1, c1), new Location(r2, c2)));
                         break;
-                    }
-                    
-                    int r1 = Integer.parseInt(commandParts[1]);
-                    int c1 = Integer.parseInt(commandParts[2]);
-                    int r2 = Integer.parseInt(commandParts[3]);
-                    int c2 = Integer.parseInt(commandParts[4]);
-                    
-                    try {
-                        cmd_line game = new cmd_line(); // Create an instance of the cmd_line class
-                        Move move = new Move(new Location(r1, c1), new Location(r2, c2));
-                        game.makeMove(move); // Invoke the makeMove method on the instance
-                        
-                        GameState gameState = game.getGameState(); // Use the instance to get the game state
-                        if (gameState == GameState.WIN) {
-                            System.out.println("Congratulations! You won the game.");
-                            quit = true;
-                        } else if (gameState == GameState.STALEMATE) {
-                            System.out.println("Game over. It's a stalemate.");
-                            quit = true;
-                        }
-                    } catch (PegGameException e) {
-                        System.out.println("Invalid move: " + e.getMessage());
-                    }
-                    
-                    break;
-                    
-                case "quit":
-                    System.out.println("Goodbye!");
-                    quit = true;
-                    break;
-                    
-                default:
-                    System.out.println("Invalid command.");
-                    break;
+                    case "quit":
+                        quit = true;
+                        System.out.println("Goodbye!");
+                        break;
+                    default:
+                        System.out.println("Invalid command");
+                        break;
+                }
+            } catch (Exception e) {
+                System.out.println("Error: " + e.getMessage());
             }
         }
-        
+
         scanner.close();
+    }
+
+    public static void main(String[] args) {
+        // create an instance of cmd_line and pass it to playGame method
+        cmd_line game = new cmd_line(5, new boolean[5][5]);
+        game.setupBoard();
+        playGame(game);
     }
 }

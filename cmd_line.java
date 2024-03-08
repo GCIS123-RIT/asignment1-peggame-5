@@ -76,6 +76,12 @@ public class cmd_line implements PegGame {
         return current_status; 
     }
 
+    /*
+     *This method will make a move on the board.
+     * 
+     * @param move the move to be made
+     * @throws PegGameException if the move is invalid
+     */
     public void makeMove(Move move) throws PegGameException{
         Collection<Move> possible_moves = getPossibleMoves(); 
         move = new Move(current_pos, move.getTo());
@@ -103,6 +109,11 @@ public class cmd_line implements PegGame {
     }
 
 
+    /*
+     * This method will return the current state of the game.
+     * 
+     * @param args the command-line arguments
+     */
     public static void userInterface(){
         Scanner scanner = new Scanner(System.in);
         boolean quit = false;

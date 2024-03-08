@@ -24,9 +24,9 @@ public class Square_PegGame implements PegGame
     */
     public void setupBoard()
     {
-        for (int i = 0; i <= BOARD_SIZE; i++)
+        for (int i = 0; i < BOARD_SIZE; i++)
         {
-            for (int j = 0; j <= BOARD_SIZE; j++)
+            for (int j = 0; j < BOARD_SIZE; j++)
             {
                 board[i][j] = new Location(i, j);
                 EmptyHole[i][j] = false;

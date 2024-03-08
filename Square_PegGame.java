@@ -1,7 +1,7 @@
 import java.util.Collection;
 import java.util.ArrayList;
 
-public class Gameplay implements PegGame
+public class Square_PegGame implements PegGame
 {
     public int BOARD_SIZE;
     public int pegs = BOARD_SIZE * BOARD_SIZE - 1;

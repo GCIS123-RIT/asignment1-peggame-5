@@ -2,6 +2,19 @@ import java.util.Collection;
 
 public class cmd_line implements PegGame {
     
+    public int BOARD_SIZE;
+    public int pegs = BOARD_SIZE * BOARD_SIZE - 1;
+   
+    public Location board [][];
+    public boolean EmptyHole[][];
+
+    public int start_row = 3;
+    public int start_col = 1;
+    public Location current_pos = new Location(start_row, start_col);
+
+    public boolean MoveMade = false;
+    public GameState current_status;
+
     public Collection<Move> getPossibleMoves(){
         return null;
     }

@@ -9,9 +9,12 @@ public class Square_PegGame implements PegGame
     public Location board [][];
     public boolean EmptyHole[][];
 
+    //starting empty hole
     public int start_row = 3;
     public int start_col = 1;
-    public Location current_pos = new Location(start_row, start_col);
+    
+    //current position of chosen peg
+    public Location current_pos = new Location();
 
     public boolean MoveMade = false;
     public GameState current_status;
@@ -30,7 +33,8 @@ public class Square_PegGame implements PegGame
             }
         }
 
-        EmptyHole[current_pos.getRow()][current_pos.getCol()] = true;
+        //make one hole empty that is reachable by current position
+        EmptyHole[start_row][start_col] = true;
     }
 
     /*

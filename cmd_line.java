@@ -165,11 +165,4 @@ public class cmd_line implements PegGame {
 
         scanner.close();
     }
-
-    public static void main(String[] args) {
-        // create an instance of cmd_line and pass it to playGame method
-        cmd_line game = new cmd_line(5, new boolean[5][5]);
-        game.setupBoard();
-        playGame(game);
-    }
 }

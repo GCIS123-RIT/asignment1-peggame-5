@@ -102,19 +102,23 @@ public class Gameplay implements PegGame
      */
     public void makeMove(Move move) throws PegGameException
     {
-        Collection<Move> possible_moves = getPossibleMoves();
-        
+        Collection<Move> possible_moves = getPossibleMoves(); 
+        move = new Move(current_pos, move.getTo());
+
         if (possible_moves.contains(move))
         {
             Location from = move.getFrom();
             Location to = move.getTo();
             Location middle = new Location((from.getRow() + to.getRow()) / 2, (from.getCol() + to.getCol()) / 2);
+            
             EmptyHole[from.getRow()][from.getCol()] = true;
             EmptyHole[to.getRow()][to.getCol()] = false;
             EmptyHole[middle.getRow()][middle.getCol()] = true;
+            
             pegs--;
-            current_pos = to;
             MoveMade = true;
+            current_pos = to;
+
         }
         else
         {

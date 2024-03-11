@@ -24,11 +24,21 @@ public class cmd_line implements PegGame {
      * 
      * @param board_size the size of the board
      */
-    public cmd_line(int board_size, boolean[][] emptyHole){
+     public cmd_line(int board_size, boolean[][] emptyHole){
         this.BOARD_SIZE = board_size;
         this.EmptyHole = emptyHole;
         this.board = new Location[BOARD_SIZE][BOARD_SIZE];
-        this.pegs = BOARD_SIZE * BOARD_SIZE - 1;
+        int peg = 0;
+        for (int i = 0; i <= BOARD_SIZE; i++)
+        {
+            for (int j = 0; j <= BOARD_SIZE; j++)
+            {
+                if (EmptyHole[i][j] == false){
+                    peg = peg + 1;
+                }
+            }
+        }
+        this.pegs = peg;
         setupBoard();
     }
 

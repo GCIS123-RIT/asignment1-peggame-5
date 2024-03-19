@@ -1,42 +1,56 @@
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Scanner;
+package main.java.Assignment1;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
 
 public class ReadTxt {
-    /*
-     * This method will create a new game from the given file.
+    
+    private String filename;
+    
+    /**
+     * This is the constructor for the ReadTxt class.
      * 
-     * @param filename the name of the file
-     * 
-     * @return the game created from the file
+     * @param filename the name of the file to be read
      */
-    public static cmd_line createGameFromFile(String filename) {
-        try {
-            File file = new File(filename);
-            Scanner scanner = new Scanner(file);
-            int BOARD_SIZE = scanner.nextInt();
-            boolean[][] EmptyHole = new boolean[BOARD_SIZE][BOARD_SIZE];
-
-            // Read the board configuration
-            for (int i = 0; i < BOARD_SIZE; i++) {
-                String row = scanner.next();
-                for (int j = 0; j < row.length(); j++) {
-                    if (row.charAt(j) == 'o') {
-                        EmptyHole[i][j] = false;
-                    }
-                    else if (row.charAt(j) == '.') {
-                        EmptyHole[i][j] = true;
-                    }
-                }
-            }
-            cmd_line game = new cmd_line(BOARD_SIZE, EmptyHole);
-            scanner.close();
-            return game;
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            return null;
-        }
+    public ReadTxt(String filename){
+        this.filename= filename;
     }
 
+    /**
+     * This reads from a file and stores the information in a 2d array based on what iss in the file.
+     * 'o' is true and ''.' is false
+     * 
+     * @return the 2d array that is read from the file
+     */
+    public boolean[][] readFromFile() throws IOException{
+        FileReader fileReader = new FileReader(filename);
+        BufferedReader bufferReader = new BufferedReader(fileReader); 
+        int size = Integer.parseInt(bufferReader.readLine());
+            
+        boolean[][] board = new boolean[size][size]; 
+
+        for (int i = 0; i < size; i++) {
+            String line = bufferReader.readLine();
+            for (int j = 0; j < size; j++) {
+                if (line.charAt(j) == 'o') 
+                {
+                    board[i][j] = true;
+                } 
+                else if(line.charAt(j) == '.')
+                {
+                    board[i][j] = false;
+                }
+                else
+                {
+                    throw new IOException("Invalid character in file");
+                }
+            }
+        }
+        bufferReader.close();
+        fileReader.close();
+        return board;
+    }
 
 }

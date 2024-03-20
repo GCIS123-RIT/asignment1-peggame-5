@@ -1,9 +1,7 @@
 import  org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
-@Testable
-public class MoveTest {
 
-  
+public class MoveTest {
     @Test
     void testHashCode() {
         Location from1 = new Location(1, 3);

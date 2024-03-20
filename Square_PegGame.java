@@ -1,3 +1,5 @@
+package main.java.Assignment1;
+
 import java.util.Collection;
 import java.util.ArrayList;
 
@@ -6,69 +8,68 @@ public class Square_PegGame implements PegGame
     public int BOARD_SIZE;
     public int pegs = BOARD_SIZE * BOARD_SIZE - 1;
    
-    public Location board [][];
-    public boolean EmptyHole[][];
+    //2D array of if board is filled or not
+    //false = empty, true = filled
+    public boolean board[][];
 
-    //starting empty hole
-    public int start_row = 3;
-    public int start_col = 1;
-    
-    //current position of chosen peg
-    public Location current_pos = new Location();
+    //chosen point
+    public int r1;
+    public int c1;
 
-    public boolean MoveMade = false;
+    public Location Chosen_pos = new Location(r1, c1);
+
     public GameState current_status;
 
-    /*this setups individual location values for each psoition on the board
-    * @return void
-    */
-    public void setupBoard()
-    {
-        for (int i = 0; i < BOARD_SIZE; i++)
-        {
-            for (int j = 0; j < BOARD_SIZE; j++)
-            {
-                board[i][j] = new Location(i, j);
-                EmptyHole[i][j] = false;
-            }
-        }
-
-        //make one hole empty that is reachable by current position
-        EmptyHole[start_row][start_col] = true;
+    public Square_PegGame(){
+        this.BOARD_SIZE = 5;
+        this.board = new boolean[BOARD_SIZE][BOARD_SIZE];
+        this.pegs = BOARD_SIZE * BOARD_SIZE - 1;
     }
 
-    /*
+    public int getTotalPegs(){
+        return pegs;
+    }
+
+    public int addPeg(){
+        pegs++;
+        return pegs; 
+    }
+
+    public int removePeg(){
+        pegs--;
+        return pegs;
+    }
+
+    /**
      * This method will return a collection of all possible moves that can be made on the board.
      * 
      * @return a collection of all possible moves that can be made on the board
      */
-    public Collection<Move> getPossibleMoves()
+    public Collection<Location> getPossibleMoves()
     {
         // 8 locations to check for possible moves
-        Location left_loc = new Location(current_pos.row, current_pos.col - 2);
-        Location right_loc = new Location(current_pos.row, current_pos.col + 2);
-        Location up_loc = new Location(current_pos.row - 2, current_pos.col);
-        Location down_loc = new Location(current_pos.row + 2, current_pos.col);
-        Location upleft_loc = new Location(current_pos.row - 2, current_pos.col - 2);
-        Location upright_loc = new Location(current_pos.row - 2, current_pos.col + 2);
-        Location downleft_loc = new Location(current_pos.row + 2, current_pos.col - 2);
-        Location downright_loc = new Location(current_pos.row + 2, current_pos.col + 2);
+        Location left_loc = new Location(Chosen_pos.row, Chosen_pos.col - 2);
+        Location right_loc = new Location(Chosen_pos.row, Chosen_pos.col + 2);
+        Location up_loc = new Location(Chosen_pos.row - 2, Chosen_pos.col);
+        Location down_loc = new Location(Chosen_pos.row + 2, Chosen_pos.col);
+        Location upleft_loc = new Location(Chosen_pos.row - 2, Chosen_pos.col - 2);
+        Location upright_loc = new Location(Chosen_pos.row - 2, Chosen_pos.col + 2);
+        Location downleft_loc = new Location(Chosen_pos.row + 2, Chosen_pos.col - 2);
+        Location downright_loc = new Location(Chosen_pos.row + 2, Chosen_pos.col + 2);
         
         Location[] possible_locs = {left_loc, right_loc, up_loc, down_loc, upleft_loc, upright_loc, downleft_loc, downright_loc};
 
 
-        ArrayList<Move> possible_moves = new ArrayList<Move>();
+        ArrayList<Location> possible_moves = new ArrayList<Location>();
 
         //checks if the possible moves are valid
         for (int i = 0; i < possible_locs.length; i++)
         {
-            if (possible_locs[i].getRow() < 0 || 
-            possible_locs[i].getRow() > BOARD_SIZE || 
-            possible_locs[i].getCol() < 0 || 
-            possible_locs[i].getCol() > BOARD_SIZE || 
-            EmptyHole[possible_locs[i].getRow()][possible_locs[i].getCol()] == false)
+            if (possible_locs[i].getRow() >= 0 && possible_locs[i].getCol() >= 0 ||
+            possible_locs[i].getRow() < BOARD_SIZE && possible_locs[i].getCol() < BOARD_SIZE ||
+            board[possible_locs[i].getRow()][possible_locs[i].getCol()] == false)
             {
-                possible_moves.add(new Move(current_pos, possible_locs[i]));
+                possible_moves.add(possible_locs[i]);
             }
         }
 
@@ -76,29 +77,28 @@ public class Square_PegGame implements PegGame
         return possible_moves;
     }
 
-    /*
+    /**
      * This method will return the current state of the game.
      * 
      * @return the current state of the game
      */
     public GameState getGameState()
     {
-        if (MoveMade == false){
-            current_status = GameState.NOT_STARTED;}
-
-        else if (MoveMade == true){
-            current_status = GameState.IN_PROGRESS;}
-        
-        else if (pegs == 1){
-            current_status = GameState.WIN;}
-
-        else if (pegs > 1){
-            current_status = GameState.STALEMATE;}
-
-        return current_status; 
+        if (pegs == 1){
+            current_status = GameState.WIN;
+            return current_status;
+        }
+        //Stalemate when no possible moves are left
+        else if (pegs > 1 && getPossibleMoves().isEmpty() == true){
+            current_status = GameState.STALEMATE;
+            return current_status;
+        }
+        else{
+            return current_status;
+        }
     }
 
-    /*
+    /**
      * This method will make a move on the board.
      * 
      * @param move the move to make
@@ -106,34 +106,27 @@ public class Square_PegGame implements PegGame
      */
     public void makeMove(Move move) throws PegGameException
     {
-        Collection<Move> possible_moves = getPossibleMoves(); 
-        move = new Move(current_pos, move.getTo());
+        Collection<Location> possible_moves = getPossibleMoves(); 
 
-        if (possible_moves.contains(move))
+        for (Location m : possible_moves)
         {
-            //
-            Location from = move.getFrom();
-            Location to = move.getTo();
-            Location middle = new Location((from.getRow() + to.getRow()) / 2, (from.getCol() + to.getCol()) / 2);
-            
-            EmptyHole[from.getRow()][from.getCol()] = true;
-            EmptyHole[to.getRow()][to.getCol()] = false;
-            EmptyHole[middle.getRow()][middle.getCol()] = true;
-            
-            pegs--;
-            MoveMade = true;
-            current_pos = to;
-
-        }
-        else
-        {
-            throw new PegGameException("Invalid move");
+            if (move.getTo().getRow() == m.getRow() && move.getTo().getCol() == m.getCol())
+            {
+                Location from = move.getFrom();
+                Location to = move.getTo();
+                Location middle = new Location((from.getRow() + to.getRow()) / 2, (from.getCol() + to.getCol()) / 2);
+                
+                board[from.getRow()][from.getCol()] = false;
+                board[to.getRow()][to.getCol()] = true;
+                board[middle.getRow()][middle.getCol()] = false;
+                
+                pegs--;
+            }
         }
     }
     
-    /*
-     * You will need to implement a toString() that can be used to display the board. Use "-" (hyphen) 
-     * to represent empty holes and "o" (lowercase o) to represent pegs on
+    /**
+     * You will need to implement a toString() that can be used to display the board. Use "-" (hyphen) to represent empty holes and "o" (lowercase o) to represent pegs on
      * the board.
      * 
      * @return a string representation of the board
@@ -142,21 +135,29 @@ public class Square_PegGame implements PegGame
     public String toString()
     {
         String board_string = "";
-        for (int i = 0; i < BOARD_SIZE; i++)
-        {
-            for (int j = 0; j < BOARD_SIZE; j++)
-            {
-                if (EmptyHole[i][j] == true)
-                {
-                    board_string += "-";
+        for (int i = 0; i < BOARD_SIZE+1; i++) {
+            if (i == 0) 
+            { // print the column numbers
+                board_string += "  ";
+                for (int j = 0; j < BOARD_SIZE; j++) {
+                    board_string += " " + j;
                 }
-                else
+            } 
+            else 
+            { // print the row numbers and the board
+                board_string += i-1 + " |";
+                for (int j = 0; j < BOARD_SIZE; j++) 
                 {
-                    board_string += "o";
+                    if (board[i-1][j] == true) {
+                        board_string += "o ";
+                    } else if (board[i-1][j] == false) {
+                        board_string += "- ";
+                    }
                 }
             }
             board_string += "\n";
         }
+        board_string += "(o = peg, - = empty hole)";
         return board_string;
     }
 }

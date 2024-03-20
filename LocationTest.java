@@ -3,11 +3,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 import org.junit.jupiter.api.Test;
-@Testable
+
 public class LocationTest {
-
-    
-
     @Test
     void testToString() {
         Location expected = new Location(4, 5);

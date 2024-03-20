@@ -1,8 +1,10 @@
+package main.java.Assignment1;
+
 import java.util.Collection;
 
 public interface PegGame {
 
-    public Collection<Move> getPossibleMoves();
+    public Collection<Location> getPossibleMoves();
 
     public GameState getGameState();
 

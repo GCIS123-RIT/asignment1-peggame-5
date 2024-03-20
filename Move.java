@@ -1,3 +1,5 @@
+package main.java.Assignment1;
+
 public class Move {
     public Location from;
     public Location to;

@@ -1,3 +1,5 @@
+package main.java.Assignment1;
+
 public class Location {
 
     public int row;

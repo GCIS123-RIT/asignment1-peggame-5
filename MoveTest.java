@@ -1,7 +1,11 @@
-import  org.junit.jupiter.api.Assertions.*;
+package main.java.Assignment1;
+
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class MoveTest {
+
+  
     @Test
     void testHashCode() {
         Location from1 = new Location(1, 3);
@@ -14,7 +18,7 @@ public class MoveTest {
         Move move1 = new Move(from1, to1); 
         Move move2 = new Move(from2, to2);
 
-        assertThat( move1.hashCode(), equalTo(move2.hashCode())); //the hash codes for equal object should be identical 
+        assertEquals(move1.hashCode(), move2.hashCode()); //the hash codes for equal object should be identical 
     }
 }
 

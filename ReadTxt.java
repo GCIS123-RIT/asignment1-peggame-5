@@ -26,6 +26,7 @@ public class ReadTxt {
      */
     public boolean[][] readFromFile() throws IOException{
         FileReader fileReader = new FileReader(filename);
+        @SuppressWarnings("resource")
         BufferedReader bufferReader = new BufferedReader(fileReader); 
         int size = Integer.parseInt(bufferReader.readLine());
             
@@ -52,5 +53,4 @@ public class ReadTxt {
         fileReader.close();
         return board;
     }
-
 }

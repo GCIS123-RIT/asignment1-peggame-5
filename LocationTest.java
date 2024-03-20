@@ -1,10 +1,12 @@
+package main.java.Assignment1;
+
 import static org.junit.jupiter.api.Assertions.*;
-
-
 
 import org.junit.jupiter.api.Test;
 
+
 public class LocationTest {
+
     @Test
     void testToString() {
         Location expected = new Location(4, 5);

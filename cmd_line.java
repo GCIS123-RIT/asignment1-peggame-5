@@ -126,7 +126,6 @@ public class cmd_line implements PegGame {
     {
         Collection<Location> possible_moves = getPossibleMoves(); 
 
-
         for (Location m : possible_moves)
         {
             if (move.getTo().getRow() == m.getRow() && move.getTo().getCol() == m.getCol())
@@ -195,43 +194,35 @@ public class cmd_line implements PegGame {
         while (!quit && game.current_status != GameState.WIN && game.current_status != GameState.STALEMATE) {
             // introduce the game
             game.current_status = GameState.IN_PROGRESS;
-            game.getCurrentPosition();
 
-            if (game.current_status == GameState.WIN) {
-                System.out.println("Congratulations! You won!");
-            } else if (game.current_status == GameState.STALEMATE) {
-                System.out.println("No more moves can be made. Game over.");
-            } else{
-                System.out.println("\nThe current board is:"); // print the board
-                System.out.println(game.toString());
+            System.out.println("\nThe current board is:"); // print the board
+            System.out.println(game.toString());
 
-                System.out.print("\nEnter a command: (move row_1 column_1 row_2 column_2 or quit)\n");
-                String command = scanner.nextLine();
+            System.out.print("\nEnter a command: (move row_1 column_1 row_2 column_2 or quit)\n");
+            String command = scanner.nextLine();
 
-                String[] parts = command.split(" ");
-                String cmd = parts[0];
+            String[] parts = command.split(" ");
+            String cmd = parts[0];
 
-                if (cmd.equals("move")) {
-                    int r1 = Integer.parseInt(parts[1]);
-                    int c1 = Integer.parseInt(parts[2]);
-                    int r2 = Integer.parseInt(parts[3]);
-                    int c2 = Integer.parseInt(parts[4]);
+            if (cmd.equals("move")) {
+                int r1 = Integer.parseInt(parts[1]);
+                int c1 = Integer.parseInt(parts[2]);
+                int r2 = Integer.parseInt(parts[3]);
+                int c2 = Integer.parseInt(parts[4]);
 
-                    setCurrentPosition(new Location(r1, c1));
-                    Move move = new Move(getCurrentPosition(), new Location(r2, c2));
-                    
-                    try {
-                        game.makeMove(move);
-                    } catch (PegGameException e) {
-                        System.out.println("Invalid move: " + e.getMessage());
-                    }
-
-                } else if (cmd.equals("quit")) {
-                    quit = true;
-                    scanner.close();
-                } else {
-                    System.out.println("Invalid command");
+                setCurrentPosition(new Location(r1, c1));
+                Move move = new Move(getCurrentPosition(), new Location(r2, c2));
+                
+                try {
+                    game.makeMove(move);
+                } catch (PegGameException e) {
+                    System.out.println("Invalid move: " + e.getMessage());
                 }
+            } else if (cmd.equals("quit")) {
+                quit = true;
+                scanner.close();
+            } else {
+                System.out.println("Invalid command");
             }
         }
         scanner.close();

@@ -94,7 +94,7 @@ public class Peg_GUI extends Application {
         Text rule1 = new Text("1. Every jump must be a jump of a peg over a neighboring peg.\n");
         Text rule2 = new Text("2. There must be a space for the jumping peg to land in.\n");
         Text rule3 = new Text("3. Jumps can be made either on the diagonal or the horizontal lines.\n");
-        Text rule4 = new Text("5. The game is over when no more jumps can be made.\n");
+        Text rule4 = new Text("4. The game is over when no more jumps can be made.\n");
         rulesFlow.getChildren().addAll(start,rulesTitle, rule1, rule2, rule3, rule4);
         rulesBox.getChildren().add(rulesFlow);
 

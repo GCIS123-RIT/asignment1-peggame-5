@@ -5,6 +5,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -118,10 +119,30 @@ public class Peg_GUI extends Application {
         return primaryStage;
     }
 
+    public void showErrorDialog(String message) {
+        Stage errorStage = new Stage();
+        errorStage.initOwner(primaryStage);
+        errorStage.setTitle("Error");
+
+        Label errorLabel = new Label(message);
+        errorLabel.setWrapText(true); // Allow text to wrap to multiple lines
+        Button okButton = new Button("OK");
+
+        okButton.setOnAction(e -> errorStage.close());
+
+        VBox errorLayout = new VBox(16);
+        errorLayout.setAlignment(Pos.CENTER);
+        errorLayout.setPadding(new Insets(16));
+        errorLayout.getChildren().addAll(errorLabel, okButton);
+
+        Scene errorScene = new Scene(errorLayout);
+        errorStage.setScene(errorScene);
+        errorStage.sizeToScene(); // Adjust the window size based on the content
+        errorStage.showAndWait();
+    }
+
     public static void main(String[] args) 
     {
         launch(args);    
-    }
-
-    
+    }   
 }

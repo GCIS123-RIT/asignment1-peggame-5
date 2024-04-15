@@ -1,4 +1,4 @@
-package main.java.Assignment1;
+package PegGame;
 
 
 import javafx.application.Application;
@@ -15,6 +15,9 @@ import javafx.stage.Stage;
 public class PegUI extends Application {
 
     static Stage MainStage;
+    static Button load;
+    static Button  save;
+    static Button exist;
 
 
 
@@ -42,6 +45,11 @@ public class PegUI extends Application {
         Button exit = new Button("Exit");
         Button save = new Button("Save Game");
         save.setVisible(false); // this button shouldnt initially show 
+
+         
+
+        
+
         load.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
         exit.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
         save.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
@@ -75,12 +83,31 @@ public class PegUI extends Application {
         // Setting the event handelers
         load.setOnAction(e -> {PEG_GUI.loadGame();});
         exit.setOnAction(e -> {PEG_GUI.exitGame();});
+        save.setOnAction(e -> {PEG_GUI.saveGame();});
     }
 
     public  static Stage getMainStage() {
         return MainStage;
     }
+    // viisbility setter
+    public static void setVisibility(Button b , boolean v){
+        if (v == true)
+        b.setVisible(true);
+        else
+        b.setVisible(false);
+        }
 
+    // getters   
+    public static Button getLoad() {
+        return load; 
+    }
+
+   
+    public static Button getSave() {
+        return save; 
+    }
+
+    
     public static void main(String[] args) {
         launch(args);
     }

@@ -15,6 +15,8 @@ public class PEG_GUI {
             try {
                 boolean[][] board = reader.readFromFile(); //from ReadTxt.java
                 cmd_line game = new cmd_line(board);
+                PegUI.setVisibility(PegUI.getLoad() , false); // updating the button state 
+                PegUI.setVisibility(PegUI.getSave() , true);  // updating the button state so the save shows 
             } catch (Exception e) {
                 Label statusLabel = new Label();
                 statusLabel.setText("Error loading game file.");

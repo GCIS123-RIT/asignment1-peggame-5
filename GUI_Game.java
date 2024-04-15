@@ -1,11 +1,13 @@
 package main.java.Assignment1;
 
 import java.io.File;
+import java.io.FileWriter;
 
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
+import java.io.IOException;
 
 public class GUI_Game {
     private Peg_GUI gui;
@@ -49,7 +51,41 @@ public class GUI_Game {
     }
 
     public void saveGame() {
+        if (game == null) {
+            statusLabel.setText("No game loaded to save.");
+            return;
+        }
+                FileChooser fileChooser = new FileChooser();
+                fileChooser.setTitle("Save Game File");
+                fileChooser.setInitialDirectory(new File("/Users/Alligator/Downloads"));
+                File file = fileChooser.showSaveDialog(gui.getPrimaryStage());
+                if (file != null) {
+                    try {
+                        saveGameToFile(file);
+                        statusLabel.setText("Game saved successfully.");
+                    } catch (IOException e) {
+                        statusLabel.setText("Error saving game file.");
+                    }
+                }
+        }
 
+    private void saveGameToFile(File file) throws IOException {
+        try (FileWriter writer = new FileWriter(file)) {
+            int boardSize = game.BOARD_SIZE;
+            writer.write(String.valueOf(boardSize) + "\n");
+
+            for (int row = 0; row < boardSize; row++) {
+                StringBuilder line = new StringBuilder();
+                for (int col = 0; col < boardSize; col++) {
+                    if (board[row][col] == true) {
+                        line.append("o");
+                    } else {
+                        line.append(".");
+                    }
+                }
+                writer.write(line.toString() + "\n");
+            }
+        }
     }
 
 }

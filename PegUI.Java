@@ -1,4 +1,4 @@
-package PegGame;
+package main.java.Assignment1;
 
 
 import javafx.application.Application;

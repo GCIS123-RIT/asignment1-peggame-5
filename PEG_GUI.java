@@ -26,6 +26,11 @@ public class PEG_GUI {
         // Now you can use selectedFile to access the chosen file
     } 
 
+    public static void  saveGame(){
+       
+        
+    }
+
     public static void exitGame (){
         System.exit(0);
     } 

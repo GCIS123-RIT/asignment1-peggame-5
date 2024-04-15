@@ -1,4 +1,4 @@
-package PegGame;
+package main.java.Assignment1;
 import java.io.File;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;

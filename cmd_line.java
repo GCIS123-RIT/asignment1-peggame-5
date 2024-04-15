@@ -144,6 +144,16 @@ public class cmd_line implements PegGame {
     }
 
     /**
+     * This method will return the current state of the game.
+     * 
+     * @return the current state of the game
+     */
+    public boolean[][] getBoard()
+    {
+        return board;
+    }
+    
+    /**
      * this method wiil print out the board
      */
     @Override

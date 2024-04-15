@@ -88,4 +88,91 @@ public class GUI_Game {
         }
     }
 
+    /**
+     * Resets the game state and prompts the user for confirmation if the game is in progress.
+     * If no game is loaded or the user confirms the reset, the game state is reset to the initial state.
+     */
+    public void resetGame() {
+        if (game != null && saveButton.isVisible()) {
+            gui.showExitConfirmation();
+        } else {
+            resetGameState();
+        }
+    }
+
+    /**
+     * Resets the game state to the initial state.
+     * Clears the game board, resets the UI labels and buttons, and hides the game board.
+     */
+    public void resetGameState() {
+        game = null;
+        selectedLocation = null;
+        boardPane.getChildren().clear();
+        statusLabel.setText("Game not started. Select a file to start the game.");
+        instructionLabel.setText("");
+        loadButton.setVisible(true);
+        saveButton.setVisible(false);
+        boardPane.setVisible(false);
+        exitButton.setVisible(true);
+        resetButton.setVisible(false);
+    }
+
+    /**
+     * Exits the program by closing the primary stage.
+     */
+    public void exitProgram() {
+        gui.getPrimaryStage().close();
+    }
+
+    public void handledMove (int row, int col){
+        Location clickedLocation = new Location(row, col);
+
+        if (selectedLocation == null) {
+            if (board[row][col] == true) {
+                selectedLocation = clickedLocation;
+                instructionLabel.setText("Select a hole to move to.");
+            } else {
+                statusLabel.setText("Please select a peg to move.");
+            }
+        } else {
+            Move move = new Move(selectedLocation, clickedLocation);
+            try {
+                game.makeMove(move);
+                board = game.getBoard();
+                if (game.current_status == GameState.WIN) {
+                    statusLabel.setText("Game over! You won!");
+                    instructionLabel.setText("");
+                    saveButton.setVisible(true);
+                } else {
+                    instructionLabel.setText("Select a peg to move.");
+                }
+            } catch (PegGameException e) {
+                statusLabel.setText(e.getMessage());
+            }
+            selectedLocation = null;
+        }
+    }
+
+    /**
+     * Updates the game status label based on the current game state.
+     * Displays the appropriate message for each game state (in progress, stalemate, won).
+     */
+    private void updateStatus() {
+        if (game == null) {
+            statusLabel.setText("Game not started. Select a file to start the game.");
+        } else {
+            GameState state = game.getGameState();
+            switch (state) {
+                case IN_PROGRESS:
+                    statusLabel.setText("Game in progress");
+                    break;
+                case STALEMATE:
+                    statusLabel.setText("Game over. Stalemate!");
+                    break;
+                case WIN:
+                    statusLabel.setText("Congratulations! You won!");
+                    break;
+            }
+        }
+    }
 }

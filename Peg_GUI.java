@@ -124,7 +124,7 @@ public class Peg_GUI extends Application {
         primaryStage.show();
 
         // Create an instance of the GUI_Game
-        game = new GUI_Game(this, null, boardPane, statusLabel, instructionLabel, null, exitButton, exitButton, exitButton, exitButton);
+        game = new GUI_Game(this, boardPane, statusLabel, instructionLabel, null, exitButton, exitButton, exitButton, exitButton);
 
         // Set event handlers
         loadButton.setOnAction(e -> game.loadGame());
@@ -186,9 +186,42 @@ public class Peg_GUI extends Application {
         confirmationStage.showAndWait();
     }
 
+    /**
+     * Updates the game board display based on the current game state and selected location.
+     *
+     * @param game             the current PegGame instance
+     * @param selectedLocation the currently selected location on the board
+     */
+    public void updateBoardDisplay(cmd_line game, Location selectedLocation) {
+        boardPane.getChildren().clear();
+        boolean[][] board = game.board;
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[i].length; j++) {
+                Button button = new Button();
+                button.setMinSize(50, 50);
+                button.setMaxSize(50, 50);
+                button.setStyle("-fx-background-color: #A5DEB3;");
+                if (board[i][j]) {
+                    button.setText("O");
+                } else {
+                    button.setText("");
+                }
+                Location location = new Location(i, j);
+                Move move = new Move(location, selectedLocation);
+                button.setOnAction(e -> game.makeMove(move));
+                if (selectedLocation != null && selectedLocation.equals(location)) {
+                    button.setStyle("-fx-background-color: #FFD700;");
+                }
+                boardPane.add(button, j, i);
+            }
+        }
+        statusLabel.setText("Pegs Remaining: " + game.pegs);
+    }
+
     public static void main(String[] args) 
     {
         launch(args);    
     }
+
     
 }

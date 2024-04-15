@@ -36,10 +36,10 @@ public class GUI_Game {
      * @param exitButton
      * @param resetButton
      */
-    public GUI_Game(Peg_GUI gui, boolean[][] board, GridPane boardPane, Label statusLabel, Label instructionLabel, Location selectedLocation, Button loadButton, Button saveButton, Button exitButton, Button resetButton) {
+    public GUI_Game(Peg_GUI gui, GridPane boardPane, Label statusLabel, Label instructionLabel, Location selectedLocation, Button loadButton, Button saveButton, Button exitButton, Button resetButton) {
         this.gui = gui;
-        this.game = new cmd_line(board);
-        this.board = board;
+        this.game = null;
+        this.board = null;
         this.boardPane = boardPane;
         this.statusLabel = statusLabel;
         this.instructionLabel = instructionLabel;
@@ -60,7 +60,7 @@ public class GUI_Game {
         if (file != null) {
             ReadTxt reader = new ReadTxt(file.getAbsolutePath());
             try {
-                board = reader.readFromFile();
+                board = reader.readFromFile(); //from ReadTxt.java
             } catch (Exception e) {
                 gui.showErrorDialog("Error loading game file. Please make sure the file is a valid .txt file and not empty or formatted wrong");
             }

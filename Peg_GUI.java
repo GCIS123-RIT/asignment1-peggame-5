@@ -99,7 +99,7 @@ public class Peg_GUI extends Application {
         rulesBox.getChildren().add(rulesFlow);
 
         // Add the components to the VBox
-        vb.getChildren().addAll(rulesBox, loadExitLayout, saveResetLayout);
+        vb.getChildren().addAll(titleText,rulesBox, loadExitLayout, saveResetLayout);
 
         // Create a StackPane
         root.getChildren().add(boardPane);

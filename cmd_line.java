@@ -58,6 +58,16 @@ public class cmd_line implements PegGame {
     }
 
     /**
+     * This method will return the current state of the game.
+     * 
+     * @return the current state of the game
+     */
+    public boolean[][] getBoard()
+    {
+        return board;
+    }
+
+    /**
      * This method will return a collection of all possible moves that can be made on the board.
      * 
      * @return a collection of all possible moves that can be made on the board
@@ -107,7 +117,7 @@ public class cmd_line implements PegGame {
             return current_status;
         }
         //Stalemate when no possible moves are left
-        else if (pegs > 1 && getPossibleMoves().isEmpty() == true){
+        else if (pegs > 1 && getPossibleMoves().isEmpty()){
             current_status = GameState.STALEMATE;
             return current_status;
         }
@@ -143,16 +153,6 @@ public class cmd_line implements PegGame {
         }
     }
 
-    /**
-     * This method will return the current state of the game.
-     * 
-     * @return the current state of the game
-     */
-    public boolean[][] getBoard()
-    {
-        return board;
-    }
-    
     /**
      * this method wiil print out the board
      */
@@ -207,7 +207,7 @@ public class cmd_line implements PegGame {
 
             System.out.println("\nThe current board is:"); // print the board
             System.out.println(game.toString());
-
+  
             System.out.print("\nEnter a command: (move row_1 column_1 row_2 column_2 or quit)\n");
             String command = scanner.nextLine();
 

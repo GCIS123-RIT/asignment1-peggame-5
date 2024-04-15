@@ -17,8 +17,11 @@ import javafx.stage.Stage;
 
 public class Peg_GUI extends Application {
 
+    private GUI_Game game;
     private GridPane boardPane;
     private VBox vb;
+    private Label statusLabel;
+    private Label instructionLabel;
     private Stage primaryStage;
     private Button loadButton;
     private Button saveButton;
@@ -26,13 +29,13 @@ public class Peg_GUI extends Application {
     private Button resetButton;
 
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage stage) {
         primaryStage = stage;
         primaryStage.setTitle("Peg Game");
 
         // Create the title text
         Text titleText = new Text("PEG GAME");
-        titleText.setFont(Font.font("Arial", FontWeight.BOLD, 120));
+        titleText.setFont(Font.font("Arial", FontWeight.BOLD, 80));
         titleText.setFill(Color.BLACK);
 
         // Create the main layout
@@ -53,6 +56,14 @@ public class Peg_GUI extends Application {
         vb.setAlignment(Pos.CENTER);
         vb.setPadding(new Insets(10, 10, 10, 10));
         vb.setSpacing(10);
+
+        // Create the status label
+        statusLabel = new Label("Select a file to start the game.");
+        statusLabel.setStyle("-fx-font-size: 16px;");
+
+        // Create the instruction label
+        instructionLabel = new Label("");
+        instructionLabel.setStyle("-fx-font-size: 16px;");
 
         VBox loadExitLayout = new VBox(8);
         loadExitLayout.setAlignment(Pos.CENTER);
@@ -110,9 +121,16 @@ public class Peg_GUI extends Application {
 
         // Set the Scene
         primaryStage.setScene(scene);
-
-        // Show the Stage
         primaryStage.show();
+
+        // Create an instance of the GUI_Game
+        game = new GUI_Game(this, null, boardPane, statusLabel, instructionLabel, null, exitButton, exitButton, exitButton, exitButton);
+
+        // Set event handlers
+        loadButton.setOnAction(e -> game.loadGame());
+        exitButton.setOnAction(e -> game.exitProgram());
+        saveButton.setOnAction(e -> game.saveGame());
+        resetButton.setOnAction(e -> game.resetGame());
     }
     
     public Stage getPrimaryStage() {
@@ -141,8 +159,36 @@ public class Peg_GUI extends Application {
         errorStage.showAndWait();
     }
 
+    public void showExitConfirmation() {
+        Stage confirmationStage = new Stage();
+        confirmationStage.initOwner(primaryStage);
+        confirmationStage.setTitle("Exit Confirmation");
+
+        Label confirmationLabel = new Label("Are you sure you want to exit without saving?");
+        Button yesButton = new Button("Yes");
+        Button noButton = new Button("No");
+
+        yesButton.setOnAction(e -> {
+            confirmationStage.close();
+            primaryStage.close();
+
+        });
+
+        noButton.setOnAction(e -> confirmationStage.close());
+
+        VBox confirmationLayout = new VBox(16);
+        confirmationLayout.setAlignment(Pos.CENTER);
+        confirmationLayout.setPadding(new Insets(16));
+        confirmationLayout.getChildren().addAll(confirmationLabel, yesButton, noButton);
+
+        Scene confirmationScene = new Scene(confirmationLayout, 300, 150);
+        confirmationStage.setScene(confirmationScene);
+        confirmationStage.showAndWait();
+    }
+
     public static void main(String[] args) 
     {
         launch(args);    
-    }   
+    }
+    
 }

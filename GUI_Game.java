@@ -22,6 +22,20 @@ public class GUI_Game {
     private Button exitButton;
     private Button resetButton;
 
+    /**
+     * constructor for GUI_Game
+     * 
+     * @param gui
+     * @param board
+     * @param boardPane
+     * @param statusLabel
+     * @param instructionLabel
+     * @param selectedLocation
+     * @param loadButton
+     * @param saveButton
+     * @param exitButton
+     * @param resetButton
+     */
     public GUI_Game(Peg_GUI gui, boolean[][] board, GridPane boardPane, Label statusLabel, Label instructionLabel, Location selectedLocation, Button loadButton, Button saveButton, Button exitButton, Button resetButton) {
         this.gui = gui;
         this.game = new cmd_line(board);
@@ -36,6 +50,9 @@ public class GUI_Game {
         this.resetButton = resetButton;
     }
 
+    /**
+     * Loads a game from a file.
+     */
     public void loadGame() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Resource File");
@@ -50,6 +67,9 @@ public class GUI_Game {
         }
     }
 
+    /**
+     * Saves the current game state to a file.
+     */
     public void saveGame() {
         if (game == null) {
             statusLabel.setText("No game loaded to save.");
@@ -69,6 +89,12 @@ public class GUI_Game {
                 }
         }
 
+    /**
+     * writes game data into a file
+     * 
+     * @param file
+     * @throws IOException
+     */
     private void saveGameToFile(File file) throws IOException {
         try (FileWriter writer = new FileWriter(file)) {
             int boardSize = game.BOARD_SIZE;
@@ -124,6 +150,12 @@ public class GUI_Game {
         gui.getPrimaryStage().close();
     }
 
+    /**
+     * Handles a move by the user.
+     * 
+     * @param row
+     * @param col
+     */
     public void handledMove (int row, int col){
         Location clickedLocation = new Location(row, col);
 

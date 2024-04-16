@@ -26,10 +26,10 @@ public class PEG_GUI {
                 board = read.readFromFile(); //from ReadTxt.java
                 game = new cmd_line(board);
                 PegUI.UpdateBoard(PegUI.boardPane, board);
-                //PegUI.setVisibility(PegUI.load , false); // updating the button state 
-                //PegUI.setVisibility(PegUI.save , true);  // updating the button state so the save shows 
+                PegUI.setVisibility(PegUI.load , false); // updating the button state 
+                PegUI.setVisibility(PegUI.save , true);  // updating the button state so the save shows 
             } catch (Exception e) {
-                PegUI.Error_PopUp("Error loading game File.");
+                PegUI.PopUp("Error loading game File.","error");
             }
         }
     } 
@@ -40,9 +40,10 @@ public class PEG_GUI {
      * @throws IOException if the file is not found
      */
     public static void  saveGame(){
+
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Save Game File");
-        File selectedFile = fileChooser.showOpenDialog(PegUI.getMainStage());
+        File selectedFile = fileChooser.showSaveDialog(PegUI.getMainStage());
         if (selectedFile != null){    
             try (FileWriter writer = new FileWriter(selectedFile)) {
                 
@@ -60,13 +61,13 @@ public class PEG_GUI {
                     }
                     writer.write(line.toString() + "\n");
                 }
+                writer.close();
+                PegUI.PopUp("Game saved successfully.","Success");
             }catch (Exception e) {
-                PegUI.statusLabel.setText("Error saving game File.");
+                PegUI.PopUp("Error saving game file.","error");
             }
         }
     }
-
-    
 
     /**
      * This method will exit the game

@@ -6,8 +6,10 @@ import javafx.stage.FileChooser;
 
 public class PEG_GUI {
 
-    public static boolean[][] board = {{false}};
-    public static cmd_line game;
+    public static boolean[][] board = {{false,true},
+                                       {true,false},
+                                       };
+    public static cmd_line game = new cmd_line(board);
 
     /**
      * This method will load a game from a file using the FileChooser and readFromFile method from ReadTxt.java
@@ -19,14 +21,15 @@ public class PEG_GUI {
         fileChooser.setTitle("Open Peg Game File");
         File selectedFile = fileChooser.showOpenDialog(PegUI.getMainStage());
         if (selectedFile != null) {
-            ReadTxt reader = new ReadTxt(selectedFile.getAbsolutePath()); // Create an instance of ReadTxt
             try {
-                board = reader.readFromFile(); //from ReadTxt.java
+                ReadTxt read = new ReadTxt(selectedFile.getAbsolutePath());
+                board = read.readFromFile(); //from ReadTxt.java
                 game = new cmd_line(board);
-                PegUI.setVisibility(PegUI.load , false); // updating the button state 
-                PegUI.setVisibility(PegUI.save , true);  // updating the button state so the save shows 
+                PegUI.UpdateBoard(PegUI.boardPane, board);
+                //PegUI.setVisibility(PegUI.load , false); // updating the button state 
+                //PegUI.setVisibility(PegUI.save , true);  // updating the button state so the save shows 
             } catch (Exception e) {
-                PegUI.statusLabel.setText("Error loading game File.");
+                PegUI.Error_PopUp("Error loading game File.");
             }
         }
     } 
@@ -61,8 +64,9 @@ public class PEG_GUI {
                 PegUI.statusLabel.setText("Error saving game File.");
             }
         }
-        
     }
+
+    
 
     /**
      * This method will exit the game

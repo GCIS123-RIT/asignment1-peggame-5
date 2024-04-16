@@ -1,29 +1,34 @@
-package PegGame;
+package main.java.Assignment1;
 
 
 import javafx.application.Application;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 public class PegUI extends Application {
 
-    static Stage MainStage;
-    static Button load;
-    static Button  save;
-    static Button exist;
-
+    public static Stage MainStage;
+    public static Button load;
+    public static Button  save;
+    public static Button exist;
+    public static Label statusLabel;
+    public static GridPane boardPane;
 
 
     @Override
     public void start(Stage MainStage) {
-        this.MainStage = MainStage;
+        PegUI.MainStage = MainStage;
         MainStage.setTitle("Peg Game ");
         
 
@@ -36,37 +41,38 @@ public class PegUI extends Application {
         Label titleLabel = new Label("Welcome To the Peg Game ");
         titleLabel.setStyle("-fx-font-size: 45px; -fx-font-weight: bold;");
         // rules
-        Label rules = new Label("Rules are as follows:\n" +
-                "1. The game board is a square with pegs in all holes except one.\n" +
-                "2. Only vertical and horizontal jumps allowed.\n" +
-                "3. The game is over when no more moves can be made.");
+        Label rules = new Label(
+                "The game board is a square with pegs in all holes except one.\n" +
+                "Only vertical and horizontal jumps allowed.\n" +
+                "The game is over when no more moves can be made.");
         // load, exit, save
         Button load = new Button("Load Game");
         Button exit = new Button("Exit");
         Button save = new Button("Save Game");
         save.setVisible(false); // this button shouldnt initially show 
-
-         
-
         
+        statusLabel = new Label();
 
         load.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
         exit.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
         save.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
 
-       
-
-
-        
+        // Create the board
+        boardPane = new GridPane();
+        boardPane.setPadding(new Insets(16));
+        boardPane.setHgap(10);
+        boardPane.setVgap(10);
+        boardPane.setAlignment(Pos.CENTER);
+        boardPane.setGridLinesVisible(false);
 
         // Create VBox for title, rules, and buttons
         VBox vbox = new VBox(20); // Adjust spacing between nodes
         vbox.setAlignment(Pos.CENTER); // Center align content
-        vbox.getChildren().addAll(titleLabel, rules, load);
+        vbox.getChildren().addAll(titleLabel, rules, load, statusLabel);
 
         // Create VBox for exit button
         VBox ButtomVBox = new VBox(20);
-        ButtomVBox.getChildren().addAll( save, exit);
+        ButtomVBox.getChildren().addAll(boardPane,save, exit);
 
         // Create BorderPane for layout
         BorderPane root = new BorderPane();
@@ -86,9 +92,37 @@ public class PegUI extends Application {
         save.setOnAction(e -> {PEG_GUI.saveGame();});
     }
 
-    public  static Stage getMainStage() {
-        return MainStage;
+    public static Stage getMainStage() {
+        return PegUI.MainStage;
     }
+
+    /**
+     * Displays an error dialog with the specified message.
+     *
+     * @param message the error message to display
+     */
+    public static void Error_PopUp(String message) {
+        Stage errorStage = new Stage();
+        errorStage.initOwner(getMainStage());
+        errorStage.setTitle("Error");
+
+        Label errorLabel = new Label(message);
+        errorLabel.setWrapText(true); // Allow text to wrap to multiple lines
+        Button okButton = new Button("OK");
+
+        okButton.setOnAction(e -> errorStage.close());
+
+        VBox errorLayout = new VBox(16);
+        errorLayout.setAlignment(Pos.CENTER);
+        errorLayout.setPadding(new Insets(16));
+        errorLayout.getChildren().addAll(errorLabel, okButton);
+
+        Scene errorScene = new Scene(errorLayout);
+        errorStage.setScene(errorScene);
+        errorStage.sizeToScene(); // Adjust the window size based on the content
+        errorStage.showAndWait();
+    }
+
     // viisbility setter
     public static void setVisibility(Button b , boolean v){
         if (v == true)
@@ -97,17 +131,46 @@ public class PegUI extends Application {
         b.setVisible(false);
         }
 
-    // getters   
-    public static Button getLoad() {
-        return load; 
+    /**
+     * mehtod to make a single tile on the board
+     */
+    public static Node makeTile() {
+        Rectangle rect = new Rectangle(50, 50);
+        //move to the left
+        rect.setTranslateX(-5);
+        rect.setFill(Color.LAVENDERBLUSH);
+        rect.setStroke(Color.BLACK);
+        return rect;
     }
 
-   
-    public static Button getSave() {
-        return save; 
+    /**
+     * This method will add pegs to the board
+     * 
+     * @param boardPane
+     * @param board
+     */
+    public static void UpdateBoard(GridPane boardPane, boolean[][] board){
+        boardPane.getChildren().clear();
+        int BoardSize = PEG_GUI.game.BOARD_SIZE;
+        for (int i = 0; i < BoardSize; i++) {
+            for (int j = 0; j < BoardSize; j++) {
+                Circle circle = new Circle(20);
+                if (board[i][j]) {
+                    circle.setFill(Color.BLACK);
+                } else {
+                    circle.setFill(Color.TRANSPARENT);
+                    circle.setStroke(Color.BLACK);
+                }
+                boardPane.add(makeTile(), j, i);
+                boardPane.add(circle, j, i);
+            }
+        }
+        boardPane.add(new Label(), 0, board.length);
+        statusLabel.setText("Pegs Remaining: " + PEG_GUI.game.pegs);
     }
 
-    
+
+
     public static void main(String[] args) {
         launch(args);
     }

@@ -84,7 +84,7 @@ public class PEG_GUI {
             } catch (PegGameException e) {
                 PegUI.PopUp("Invalid move. " + e.getMessage(),"error");
                 selectedLocation = null;
-                PegUI.UpdateBoard(PegUI.boardPane, board);
+                PegUI.UpdateBoard(PegUI.boardPane, game.board);
             }
         }
     }

@@ -29,6 +29,7 @@ public class PEG_GUI {
                 PegUI.UpdateBoard(PegUI.boardPane, board);
                 PegUI.setVisibility(PegUI.load , false); // updating the button state 
                 PegUI.setVisibility(PegUI.save , true);  // updating the button state so the save shows 
+                game.current_status = GameState.IN_PROGRESS;
             } catch (Exception e) {
                 PegUI.PopUp("Error loading game File.","error");
             }
@@ -73,12 +74,14 @@ public class PEG_GUI {
     public static void select_peg(int row, int col){
         Location clickedLocation = new Location(row, col);
         if (selectedLocation == null) {
-            if (game.board[clickedLocation.getRow()][clickedLocation.getCol()] == true) {   
-                game.setCurrentPosition(clickedLocation);
+            if (game.board[row][col] == true) {   
+                selectedLocation = clickedLocation;
+                PegUI.UpdateBoard(PegUI.boardPane, game.board);
             }
         } else {
-            Move move = new Move(selectedLocation, clickedLocation);
             try {
+                game.setCurrentPosition(clickedLocation);
+                Move move = new Move(game.getCurrentPosition(), clickedLocation);
                 game.makeMove(move);
                 PegUI.UpdateBoard(PegUI.boardPane, game.board);
             } catch (PegGameException e) {

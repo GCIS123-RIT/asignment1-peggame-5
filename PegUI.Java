@@ -11,6 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -184,9 +185,17 @@ public class PegUI extends Application {
                 Circle circle = new Circle(20);
                 if (board[i][j]) {
                     circle.setFill(Color.BLACK);
+                    circle.setOnMouseClicked(e -> {
+                        PEG_GUI.selectedLocation = new Location(GridPane.getRowIndex(circle), GridPane.getColumnIndex(circle));
+                    });
                 } else {
                     circle.setFill(Color.TRANSPARENT);
                     circle.setStroke(Color.BLACK);
+                    circle.setOnMouseClicked(e -> {
+                        PEG_GUI.game.makeMove(new Move(PEG_GUI.selectedLocation, new Location(GridPane.getRowIndex(circle), GridPane.getColumnIndex(circle))));
+                        UpdateBoard(boardPane, PEG_GUI.board);
+                        statusLabel.setText("Pegs Remaining: " + PEG_GUI.game.pegs);
+                    });
                 }
                 boardPane.add(makeTile(), j, i);
                 boardPane.add(circle, j, i);

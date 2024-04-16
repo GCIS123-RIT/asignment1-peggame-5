@@ -1,37 +1,73 @@
 package main.java.Assignment1;
 import java.io.File;
+import java.io.FileWriter;
+
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 
 public class PEG_GUI {
 
-    public static void loadGame (){
+    public static boolean[][] board = {{false}};
+    public static cmd_line game;
 
+    /**
+     * This method will load a game from a file using the FileChooser and readFromFile method from ReadTxt.java
+     * 
+     * @throws IOException if the file is not found
+     */
+    public static void loadGame (){
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Peg Game File");
         File selectedFile = fileChooser.showOpenDialog(PegUI.getMainStage());
         if (selectedFile != null) {
             ReadTxt reader = new ReadTxt(selectedFile.getAbsolutePath()); // Create an instance of ReadTxt
             try {
-                boolean[][] board = reader.readFromFile(); //from ReadTxt.java
-                cmd_line game = new cmd_line(board);
-                PegUI.setVisibility(PegUI.getLoad() , false); // updating the button state 
-                PegUI.setVisibility(PegUI.getSave() , true);  // updating the button state so the save shows 
+                board = reader.readFromFile(); //from ReadTxt.java
+                game = new cmd_line(board);
+                PegUI.setVisibility(PegUI.load , false); // updating the button state 
+                PegUI.setVisibility(PegUI.save , true);  // updating the button state so the save shows 
             } catch (Exception e) {
-                Label statusLabel = new Label();
-                statusLabel.setText("Error loading game file.");
-                
+                PegUI.statusLabel.setText("Error loading game File.");
             }
         }
-        // Now you can use selectedFile to access the chosen file
     } 
 
+    /**
+     * This method will save a game to a file using the FileChooser and FileWriter
+     * 
+     * @throws IOException if the file is not found
+     */
     public static void  saveGame(){
-       
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save Game File");
+        File selectedFile = fileChooser.showOpenDialog(PegUI.getMainStage());
+        if (selectedFile != null){    
+            try (FileWriter writer = new FileWriter(selectedFile)) {
+                
+                int BoardSize = game.BOARD_SIZE;
+                writer.write(String.valueOf(BoardSize) + "\n");
+
+                for (int row = 0; row < BoardSize; row++) {
+                    StringBuilder line = new StringBuilder();
+                    for (int col = 0; col < BoardSize; col++) {
+                        if (board[row][col] == true) {
+                            line.append("o");
+                        } else {
+                            line.append(".");
+                        }
+                    }
+                    writer.write(line.toString() + "\n");
+                }
+            }catch (Exception e) {
+                PegUI.statusLabel.setText("Error saving game File.");
+            }
+        }
         
     }
 
+    /**
+     * This method will exit the game
+     */
     public static void exitGame (){
-        System.exit(0);
+        PegUI.getMainStage().close();
     } 
 }

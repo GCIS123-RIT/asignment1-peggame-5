@@ -10,6 +10,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -25,7 +26,11 @@ public class PegUI extends Application {
     public static Label statusLabel;
     public static GridPane boardPane;
 
-
+    /**
+     * This method will start the GUI for the peg game
+     * 
+     * @param MainStage the main stage for the GUI
+     */
     @Override
     public void start(Stage MainStage) {
         PegUI.MainStage = MainStage;
@@ -46,9 +51,9 @@ public class PegUI extends Application {
                 "Only vertical and horizontal jumps allowed.\n" +
                 "The game is over when no more moves can be made.");
         // load, exit, save
-        Button load = new Button("Load Game");
+        load = new Button("Load Game");
         Button exit = new Button("Exit");
-        Button save = new Button("Save Game");
+        save = new Button("Save Game");
         save.setVisible(false); // this button shouldnt initially show 
         
         statusLabel = new Label();
@@ -60,19 +65,23 @@ public class PegUI extends Application {
         // Create the board
         boardPane = new GridPane();
         boardPane.setPadding(new Insets(16));
-        boardPane.setHgap(10);
-        boardPane.setVgap(10);
+        boardPane.setHgap(5);
+        boardPane.setVgap(5);
         boardPane.setAlignment(Pos.CENTER);
         boardPane.setGridLinesVisible(false);
+
+        HBox hbox = new HBox(10);
+        hbox.setAlignment(Pos.CENTER);
+        hbox.getChildren().addAll(load, save);
 
         // Create VBox for title, rules, and buttons
         VBox vbox = new VBox(20); // Adjust spacing between nodes
         vbox.setAlignment(Pos.CENTER); // Center align content
-        vbox.getChildren().addAll(titleLabel, rules, load, statusLabel);
+        vbox.getChildren().addAll(titleLabel, rules, hbox ,statusLabel,boardPane);
 
         // Create VBox for exit button
         VBox ButtomVBox = new VBox(20);
-        ButtomVBox.getChildren().addAll(boardPane,save, exit);
+        ButtomVBox.getChildren().addAll(exit);
 
         // Create BorderPane for layout
         BorderPane root = new BorderPane();
@@ -92,6 +101,11 @@ public class PegUI extends Application {
         save.setOnAction(e -> {PEG_GUI.saveGame();});
     }
 
+    /**
+     * This method will return the main stage
+     * 
+     * @return the main stage
+     */
     public static Stage getMainStage() {
         return PegUI.MainStage;
     }
@@ -100,30 +114,40 @@ public class PegUI extends Application {
      * Displays an error dialog with the specified message.
      *
      * @param message the error message to display
+     * @param title   the title of the error dialog
+     * 
+     * @return void
      */
-    public static void Error_PopUp(String message) {
-        Stage errorStage = new Stage();
-        errorStage.initOwner(getMainStage());
-        errorStage.setTitle("Error");
+    public static void PopUp(String message,String title) {
+        Stage PopStage = new Stage();
+        PopStage.initOwner(getMainStage());
+        PopStage.setTitle(title);
 
-        Label errorLabel = new Label(message);
-        errorLabel.setWrapText(true); // Allow text to wrap to multiple lines
+        Label PopLabel = new Label(message);
+        PopLabel.setWrapText(true); // Allow text to wrap to multiple lines
         Button okButton = new Button("OK");
 
-        okButton.setOnAction(e -> errorStage.close());
+        okButton.setOnAction(e -> PopStage.close());
 
-        VBox errorLayout = new VBox(16);
-        errorLayout.setAlignment(Pos.CENTER);
-        errorLayout.setPadding(new Insets(16));
-        errorLayout.getChildren().addAll(errorLabel, okButton);
+        VBox Layout_UP = new VBox(16);
+        Layout_UP.setAlignment(Pos.CENTER);
+        Layout_UP.setPadding(new Insets(16));
+        Layout_UP.getChildren().addAll(PopLabel, okButton);
 
-        Scene errorScene = new Scene(errorLayout);
-        errorStage.setScene(errorScene);
-        errorStage.sizeToScene(); // Adjust the window size based on the content
-        errorStage.showAndWait();
+        Scene PopScene = new Scene(Layout_UP);
+        PopStage.setScene(PopScene);
+        PopStage.sizeToScene(); // Adjust the window size based on the content
+        PopStage.showAndWait();
     }
 
-    // viisbility setter
+    /**
+     * Method to set the visibility of a button
+     * 
+     * @param b the button to set the visibility of
+     * @param v the visibility to set
+     * 
+     * @return void
+     */
     public static void setVisibility(Button b , boolean v){
         if (v == true)
         b.setVisible(true);
@@ -136,10 +160,13 @@ public class PegUI extends Application {
      */
     public static Node makeTile() {
         Rectangle rect = new Rectangle(50, 50);
+
         //move to the left
         rect.setTranslateX(-5);
-        rect.setFill(Color.LAVENDERBLUSH);
+
+        rect.setFill(Color.LIGHTGRAY);
         rect.setStroke(Color.BLACK);
+
         return rect;
     }
 
@@ -169,8 +196,13 @@ public class PegUI extends Application {
         statusLabel.setText("Pegs Remaining: " + PEG_GUI.game.pegs);
     }
 
-
-
+    /**
+     * main method to launch the GUI
+     * 
+     * @param args
+     * 
+     * @return void
+     */
     public static void main(String[] args) {
         launch(args);
     }

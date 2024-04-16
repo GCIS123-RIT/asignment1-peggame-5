@@ -10,6 +10,7 @@ public class PEG_GUI {
                                        {true,false},
                                        };
     public static cmd_line game = new cmd_line(board);
+    public static Location selectedLocation;
 
     /**
      * This method will load a game from a file using the FileChooser and readFromFile method from ReadTxt.java
@@ -65,6 +66,25 @@ public class PEG_GUI {
                 PegUI.PopUp("Game saved successfully.","Success");
             }catch (Exception e) {
                 PegUI.PopUp("Error saving game file.","error");
+            }
+        }
+    }
+
+    public static void select_peg(int row, int col){
+        Location clickedLocation = new Location(row, col);
+        if (selectedLocation == null) {
+            if (game.board[clickedLocation.getRow()][clickedLocation.getCol()] == true) {   
+                game.setCurrentPosition(clickedLocation);
+            }
+        } else {
+            Move move = new Move(selectedLocation, clickedLocation);
+            try {
+                game.makeMove(move);
+                PegUI.UpdateBoard(PegUI.boardPane, game.board);
+            } catch (PegGameException e) {
+                PegUI.PopUp("Invalid move. " + e.getMessage(),"error");
+                selectedLocation = null;
+                PegUI.UpdateBoard(PegUI.boardPane, board);
             }
         }
     }

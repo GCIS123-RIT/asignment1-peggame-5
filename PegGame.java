@@ -12,7 +12,7 @@ public interface PegGame {
      * 
      * @return the location of the empty hole
      */
-    public Collection<Location> getPossibleMoves(Location loc);
+    public Collection<Location> getPossibleMoves();
 
     /**
      * determine the gamestate of the peg game and actions based off condition

@@ -6,9 +6,7 @@ import javafx.stage.FileChooser;
 
 public class PEG_GUI {
 
-    public static boolean[][] board = {{false,true},
-                                       {true,false},
-                                       };
+    public static boolean[][] board = {{false,true},{true,false},};
     public static cmd_line game = new cmd_line(board);
     public static Location selectedLocation;
 
@@ -26,8 +24,7 @@ public class PEG_GUI {
                 ReadTxt read = new ReadTxt(selectedFile.getAbsolutePath());
                 board = read.readFromFile(); //from ReadTxt.java
                 game = new cmd_line(board);
-                PegUI.UpdateBoard(PegUI.boardPane, board);
-                PegUI.setVisibility(PegUI.load , false); // updating the button state 
+                PegUI.UpdateBoard(PegUI.boardPane, board, null);
                 PegUI.setVisibility(PegUI.save , true);  // updating the button state so the save shows 
                 game.current_status = GameState.IN_PROGRESS;
             } catch (Exception e) {
@@ -71,23 +68,29 @@ public class PEG_GUI {
         }
     }
 
+    /**
+     * this method handles the selection and movement of the boar
+     * 
+     * @param row the row of the peg
+     * @param col the column of the peg
+     */
     public static void select_peg(int row, int col){
-        Location clickedLocation = new Location(row, col);
-        if (selectedLocation == null) {
-            if (game.board[row][col] == true) {   
-                selectedLocation = clickedLocation;
-                PegUI.UpdateBoard(PegUI.boardPane, game.board);
-            }
-        } else {
-            try {
-                game.setCurrentPosition(clickedLocation);
-                Move move = new Move(game.getCurrentPosition(), clickedLocation);
-                game.makeMove(move);
-                PegUI.UpdateBoard(PegUI.boardPane, game.board);
-            } catch (PegGameException e) {
-                PegUI.PopUp("Invalid move. " + e.getMessage(),"error");
-                selectedLocation = null;
-                PegUI.UpdateBoard(PegUI.boardPane, game.board);
+        if (game.current_status == GameState.IN_PROGRESS) {
+            if (selectedLocation == null) {
+                selectedLocation = new Location(row, col);
+                game.setCurrentPosition(selectedLocation);
+                PegUI.UpdateBoard(PegUI.boardPane, board, selectedLocation);
+            } else {
+                try{
+                    Move move = new Move(selectedLocation, new Location(row, col));
+                    game.makeMove(move);
+                    selectedLocation = null;
+                    PegUI.UpdateBoard(PegUI.boardPane, board , selectedLocation);
+                } catch (PegGameException e) {
+                    PegUI.PopUp("Invalid Move!","error");
+                    selectedLocation = null;
+                    PegUI.UpdateBoard(PegUI.boardPane, board, selectedLocation);
+                }
             }
         }
     }

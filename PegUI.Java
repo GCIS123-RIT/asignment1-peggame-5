@@ -11,7 +11,6 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -71,14 +70,26 @@ public class PegUI extends Application {
         boardPane.setAlignment(Pos.CENTER);
         boardPane.setGridLinesVisible(false);
 
+        Label ispeg = new Label("Peg = ");
+        Label isnotpeg = new Label("Not Peg = ");
+
+        Circle e_peg = new Circle(20);
+        e_peg.setFill(Color.BLACK);
+        Circle e_notpeg = new Circle(20);
+        e_notpeg.setFill(Color.WHITE);
+
         HBox hbox = new HBox(10);
         hbox.setAlignment(Pos.CENTER);
         hbox.getChildren().addAll(load, save);
 
+        HBox pegIndicators = new HBox(10);
+        pegIndicators.setAlignment(Pos.CENTER);
+        pegIndicators.getChildren().addAll(ispeg, e_peg, isnotpeg, e_notpeg);
+
         // Create VBox for title, rules, and buttons
         VBox vbox = new VBox(20); // Adjust spacing between nodes
         vbox.setAlignment(Pos.CENTER); // Center align content
-        vbox.getChildren().addAll(titleLabel, rules, hbox ,statusLabel,boardPane);
+        vbox.getChildren().addAll(titleLabel, rules, hbox ,statusLabel,pegIndicators,boardPane);
 
         // Create VBox for exit button
         VBox ButtomVBox = new VBox(20);
@@ -159,14 +170,18 @@ public class PegUI extends Application {
     /**
      * mehtod to make a single tile on the board
      */
-    public static Node makeTile() {
+    public static Node makeTile(int i) {
         Rectangle rect = new Rectangle(50, 50);
 
         //move to the left
         rect.setTranslateX(-5);
 
-        rect.setFill(Color.LIGHTGRAY);
-        rect.setStroke(Color.BLACK);
+        if (i % 2 == 0) {
+            rect.setFill(Color.LIGHTGRAY);
+            rect.setStroke(Color.BLACK);
+        } else {
+            rect.setFill(Color.GREEN);
+        }
 
         return rect;
     }
@@ -177,31 +192,31 @@ public class PegUI extends Application {
      * @param boardPane
      * @param board
      */
-    public static void UpdateBoard(GridPane boardPane, boolean[][] board){
+    public static void UpdateBoard(GridPane boardPane, boolean[][] board, Location selectedLocation){
         boardPane.getChildren().clear();
         int BoardSize = PEG_GUI.game.BOARD_SIZE;
         for (int i = 0; i < BoardSize; i++) {
             for (int j = 0; j < BoardSize; j++) {
+                final int row = i; // Create a final copy of i
+                final int col = j; // Create a final copy of j
+                Node tile = makeTile(2);
                 Circle circle = new Circle(20);
-                if (board[i][j]) {
-                    circle.setFill(Color.BLACK);
-                    circle.setOnMouseClicked(e -> {
-                        PEG_GUI.selectedLocation = new Location(GridPane.getRowIndex(circle), GridPane.getColumnIndex(circle));
-                    });
+                if (board[i][j] == true) {
+                    circle.setOnMouseClicked(e -> PEG_GUI.select_peg(row, col)); // Use the final copy of i
+                    if (selectedLocation != null && selectedLocation.getRow() == i && selectedLocation.getCol() == j) {
+                        tile = makeTile(1);
+                    } else {
+                        circle.setFill(Color.BLACK);
+                    }
                 } else {
-                    circle.setFill(Color.TRANSPARENT);
+                    circle.setFill(Color.WHITE);
                     circle.setStroke(Color.BLACK);
-                    circle.setOnMouseClicked(e -> {
-                        PEG_GUI.game.makeMove(new Move(PEG_GUI.selectedLocation, new Location(GridPane.getRowIndex(circle), GridPane.getColumnIndex(circle))));
-                        UpdateBoard(boardPane, PEG_GUI.board);
-                        statusLabel.setText("Pegs Remaining: " + PEG_GUI.game.pegs);
-                    });
+                    circle.setOnMouseClicked(e -> PEG_GUI.select_peg(row, col)); // Use the final copy of i
                 }
-                boardPane.add(makeTile(), j, i);
+                boardPane.add(tile, j, i);
                 boardPane.add(circle, j, i);
             }
         }
-        boardPane.add(new Label(), 0, board.length);
         statusLabel.setText("Pegs Remaining: " + PEG_GUI.game.pegs);
     }
 

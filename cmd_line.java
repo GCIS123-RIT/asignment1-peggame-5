@@ -112,18 +112,21 @@ public class cmd_line implements PegGame {
      */
     public GameState getGameState()
     {
-        if (pegs == 1){
+
+        if (pegs == 1)
+        {
             current_status = GameState.WIN;
-            return current_status;
         }
-        //Stalemate when no possible moves are left
-        else if (pegs > 1 && getPossibleMoves().isEmpty()){
+        else if (pegs >1 && getPossibleMoves().isEmpty())
+        {
             current_status = GameState.STALEMATE;
-            return current_status;
         }
-        else{
-            return current_status;
+        else
+        {
+            current_status = GameState.IN_PROGRESS;
         }
+
+        return current_status;
     }
 
     /**
@@ -196,7 +199,6 @@ public class cmd_line implements PegGame {
         boolean quit = false;
 
         System.out.println("\nWelcome to the Peg Game!");
-        System.out.println("\nThe game board is a square with pegs in all holes except one.");
         System.out.println("\nThe goal is to jump pegs over other pegs to remove them from the board.");
         System.out.println("\nThe game is over when no more moves can be made.");
         System.out.println("Good luck!");

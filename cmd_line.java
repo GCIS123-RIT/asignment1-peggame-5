@@ -153,6 +153,10 @@ public class cmd_line implements PegGame {
                 
                 pegs--;
             }
+            else
+            {
+                throw new PegGameException("Invalid move");
+            }
         }
     }
 

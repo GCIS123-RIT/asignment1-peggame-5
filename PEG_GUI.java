@@ -81,17 +81,17 @@ public class PEG_GUI {
                 game.setCurrentPosition(selectedLocation);
                 PegUI.UpdateBoard(PegUI.boardPane, board, selectedLocation);
             } else {
-                try{
-                    Move move = new Move(selectedLocation, new Location(row, col));
-                    game.makeMove(move);
-                    selectedLocation = null;
-                    PegUI.UpdateBoard(PegUI.boardPane, board , selectedLocation);
-                } catch (PegGameException e) {
-                    PegUI.PopUp("Invalid Move!","error");
-                    selectedLocation = null;
-                    PegUI.UpdateBoard(PegUI.boardPane, board, selectedLocation);
+                    Location toClick= new Location(row, col);
+                    Move move = new Move(selectedLocation, toClick);
+                    try {
+                        game.makeMove(move);
+                        selectedLocation = null;
+                        PegUI.UpdateBoard(PegUI.boardPane, board, selectedLocation);
+                    } catch (PegGameException e) {
+                        PegUI.PopUp("Invalid move to" + toClick ,"error");
+                    }
+                
                 }
-            }
         }
     }
 

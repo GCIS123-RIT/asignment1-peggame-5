@@ -86,6 +86,7 @@ public class PEG_GUI {
                     try {
                         game.makeMove(move);
                         selectedLocation = null;
+                        game.setCurrentPosition(selectedLocation);
                         PegUI.UpdateBoard(PegUI.boardPane, board, selectedLocation);
                     } catch (PegGameException e) {
                         PegUI.PopUp("Invalid move to" + toClick ,"error");

@@ -153,7 +153,7 @@ public class cmd_line implements PegGame {
                 
                 pegs--;
             }
-            else
+            else if (move.getTo().getRow() == m.getRow() && move.getTo().getCol() == m.getCol())
             {
                 throw new PegGameException("Invalid move");
             }
